@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tính khối nhanh</title>
+    <style>
+        body {
+            font-family: -apple-system, Arial, sans-serif;
+            margin: 10px;
+            background-color: #f0f0f0;
+            color: #000;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #555;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #d0d0d0;
+        }
+        input[type="number"] {
+            width: 70px; /* Tăng kích thước ô nhập cho dễ chạm */
+            padding: 6px;
+            font-size: 14px;
+            border: 1px solid #555;
+            border-radius: 4px;
+            -webkit-appearance: none; /* Loại bỏ giao diện mặc định trên iOS */
+        }
+        .total-row {
+            font-weight: bold;
+            background-color: #c0c0c0;
+        }
+        .table-container {
+            overflow-x: auto;
+            max-width: 100%;
+        }
+        .reset-button {
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #ff4444;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        @media screen and (max-width: 600px) {
+            table {
+                font-size: 12px;
+            }
+            input[type="number"] {
+                width: 60px;
+            }
+            th, td {
+                padding: 6px;
+            }
+        }
+        /* Hỗ trợ chế độ tối */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1a1a;
+                color: #fff;
+            }
+            th {
+                background-color: #333;
+            }
+            .total-row {
+                background-color: #444;
+            }
+            input[type="number"] {
+                background-color: #333;
+                color: #fff;
+                border-color: #888;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>Sản Phẩm</th>
+                    <th>Phân loại</th>
+                    <th>Đơn khối</th>
+                    <th>Nhập số lượng</th>
+                    <th>Số Khối</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td rowspan="4">Bộ ghế băng</td>
+                    <td>1m2+2 băng</td>
+                    <td>0.185</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m4+2 băng</td>
+                    <td>0.2</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m6+2 băng</td>
+                    <td>0.215</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m8+2 băng</td>
+                    <td>0.23</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td rowspan="4">Bộ ghế đôn</td>
+                    <td>1m2+4 ghế</td>
+                    <td>0.373</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m4+4 ghế</td>
+                    <td>0.383</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m6+6 ghế</td>
+                    <td>0.515</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m8+8 ghế</td>
+                    <td>0.646</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td rowspan="4">Bộ ghế tựa</td>
+                    <td>1m2+4 ghế</td>
+                    <td>0.535</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m4+4 ghế</td>
+                    <td>0.545</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m6+6 ghế</td>
+                    <td>0.758</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m8+8 ghế</td>
+                    <td>0.97</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td rowspan="4">Bàn lẻ</td>
+                    <td>1m2</td>
+                    <td>0.13</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m4</td>
+                    <td>0.14</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m6</td>
+                    <td>0.15</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>1m8</td>
+                    <td>0.16</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>Ghế đôn lẻ</td>
+                    <td></td>
+                    <td>0.061</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr>
+                    <td>Ghế tựa lẻ</td>
+                    <td></td>
+                    <td>0.1015</td>
+                    <td><input type="number" min="0" value="0" oninput="calculateVolume(this)"></td>
+                    <td class="volume">0</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="4">Tổng thể tích</td>
+                    <td id="totalVolume">0</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <button class="reset-button" onclick="resetInputs()">Xóa tất cả</button>
+
+    <script>
+        function calculateVolume(input) {
+            const row = input.closest('tr');
+            const unitCellIndex = row.cells.length === 5 ? 2 : 1;
+            const unitVolume = parseFloat(row.cells[unitCellIndex].textContent) || 0;
+            const quantity = parseFloat(input.value) || 0;
+            const volume = (unitVolume * quantity).toFixed(3);
+            row.querySelector('.volume').textContent = volume;
+            updateTotalVolume();
+        }
+
+        function updateTotalVolume() {
+            const volumeCells = document.querySelectorAll('#productTable tbody .volume');
+            let total = 0;
+            volumeCells.forEach(cell => {
+                total += parseFloat(cell.textContent) || 0;
+            });
+            document.getElementById('totalVolume').textContent = total.toFixed(3);
+        }
+
+        function resetInputs() {
+            const inputs = document.querySelectorAll('input[type="number"]:not([disabled])');
+            inputs.forEach(input => {
+                input.value = 0;
+                const row = input.closest('tr');
+                row.querySelector('.volume').textContent = '0';
+            });
+            document.getElementById('totalVolume').textContent = '0';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputs = document.querySelectorAll('input[type="number"]:not([disabled])');
+            inputs.forEach(input => {
+                input.addEventListener('input', () => calculateVolume(input));
+            });
+        });
+    </script>
+</body>
+</html>
